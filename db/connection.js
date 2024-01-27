@@ -1,21 +1,21 @@
-// require('dotenv').config()
-const mongoose = require('mongoose')
+import mongoose from 'mongoose';
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(
-      process.env.MONGO_URI || 'mongodb://127.0.0.1/yourdbname',
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      },
-    )
+const userSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+    },
+},
+{
+    // this keeps a track of the createdAt and updateAt timestamps
+    timestamps: true,
+})
 
-    console.log('MongoDB connection SUCCESS')
-  } catch (error) {
-    console.error('MongoDB connection FAIL')
-    process.exit(1)
-  }
-}
+const User = new mongoose.model('user', userSchema);
 
-module.exports = {connectDB}
+export default User;
