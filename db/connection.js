@@ -1,21 +1,19 @@
+// require('dotenv').config()
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-},
-{
-    // this keeps a track of the createdAt and updateAt timestamps
-    timestamps: true,
-})
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(
+      process.env.MONGO_URI || 'mongodb://127.0.0.1/greencommerce',
+      {
+        // useNewUrlParser: true,
+        // useUnifiedTopology: true,
+      },
+    )
 
-const User = new mongoose.model('user', userSchema);
-
-export default User;
+    console.log('MongoDB connection SUCCESS')
+  } catch (error) {
+    console.error('MongoDB connection FAIL')
+    process.exit(1)
+  }
+}
